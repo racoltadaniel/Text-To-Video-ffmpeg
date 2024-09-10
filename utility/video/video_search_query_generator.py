@@ -89,7 +89,7 @@ Timed Captions:{}
         model="gpt-4o-mini",
         temperature=1,
         messages=[
-            {"role": "system", "content": prompt.format(end)},
+            {"role": "system", "content": prompt % end},
             {"role": "user", "content": user_content}
         ]
     )
