@@ -15,12 +15,27 @@ Style: Yellow,Arial,15,&H00FFFF00,&H000000FF,&H00000000,&H64000000,1,0,0,0,100,1
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 """
 
-SUBTITLE_LINE = "Dialogue: 0,%s,%s,Default,,0,0,0,,{\an5\fad(200,200)}%s"
+SUBTITLE_LINE = "Dialogue: 0,%s,%s,Default,,0,0,0,,{\an5}%s"
+SUBTITLE_LINE_YELLOW = "Dialogue: 0,%s,%s,Yellow,,0,0,0,,{\an5}%s"
 
 def add_caption(file_path, timed_captions):
 
+
     subtitle_content = SUBTITLE_TEMPLATE
-    for (t1, t2), caption_text in timed_captions:
+    i = 0
+    while i < len(timed_captions) - 1:
+        (t1, t2), caption_text = timed_captions[i]
+        (next_t1, next_t2), next_caption_text = timed_captions[i + 1]
+        
+        # Process current and next row simultaneously
+        subtitle_content += SUBTITLE_LINE % (t1, t2, caption_text) + "\n"
+        subtitle_content += SUBTITLE_LINE_YELLOW % (next_t1, next_t2, next_caption_text) + "\n"
+        
+        i += 2
+
+    # Handle the last, unpaired row if present
+    if i < len(timed_captions):
+        (t1, t2), caption_text = timed_captions[i]
         subtitle_content += SUBTITLE_LINE % (t1, t2, caption_text) + "\n"
 
     caption_ass_file_path=file_path.replace(".mp4", f"_caption.ass")

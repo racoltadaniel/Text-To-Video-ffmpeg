@@ -23,3 +23,7 @@ async def generate_audio(text,outputFilename, language):
 
     with open("test.vtt", "w", encoding="utf-8") as file:
         file.write(submaker.generate_subs())
+
+    with open("test.vtt2", "w", encoding="utf-8") as file:
+        file.write(submaker.generate_subs(words_in_cue=2))
+        

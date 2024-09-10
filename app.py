@@ -35,6 +35,9 @@ if __name__ == "__main__":
     timed_captions = generate_timed_captions("test.vtt")
     logging.info("Timed captions generated: %s", timed_captions)
 
+    timed_captions_mini = generate_timed_captions("test.vtt2")
+    logging.info("Timed captions mini generated: %s", timed_captions_mini)
+
     search_terms = getVideoSearchQueriesTimed(response, timed_captions)
     #search_terms = [[[0, 2.82], ['meeting ex', 'relationship start', 'two years']], [[2.82, 5.24], ['ex-girlfriend', 'couple years', 'time together']], [[5.24, 7.54], ['boob job', 'surgery discussion', 'breast enhancement']], [[7.54, 9.24], ['previous partners', 'dating history', 'opinion on surgery']], [[9.24, 11.84], ['personal preference', 'dislikes surgery', 'deal breaker']]]
     logging.info("Search terms generated: %s", search_terms)
@@ -50,7 +53,7 @@ if __name__ == "__main__":
     background_video_urls = merge_empty_intervals(background_video_urls)
 
     if background_video_urls is not None:
-        video = get_output_media(SAMPLE_FILE_NAME, timed_captions, background_video_urls, VIDEO_SERVER, JOB_ID)
+        video = get_output_media(SAMPLE_FILE_NAME, timed_captions_mini, background_video_urls, VIDEO_SERVER, JOB_ID)
         logging.info("Video generation completed")
     else:
         logging.error("No video generated")
