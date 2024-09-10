@@ -8,14 +8,13 @@ ScriptType: v4.00+
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Default,Arial,25,&H00FFFFFF,&H000000FF,&H00000000,&H64000000,1,1,0,0,100,100,0,0,1,20,3,5,10,10,10,1
+Style: Default,Arial,20,&H00FFFFFF,&H000000FF,&H00000000,&H64000000,1,1,0,0,100,100,0,0,1,20,3,5,10,10,10,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-
 """
 
-SUBTITLE_LINE = "Dialogue: 0,0:00:%s,0:00:%s,Default,,0,0,0,,{\an5}%s"
+SUBTITLE_LINE = "Dialogue: 0,%s,%s,Default,,0,0,0,,{\an5}%s"
 
 def add_caption(file_path, timed_captions):
 
