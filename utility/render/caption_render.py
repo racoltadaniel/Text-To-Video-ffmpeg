@@ -35,6 +35,4 @@ def add_caption(file_path, timed_captions):
         '-c:a', 'copy', output_video
     ])
 
-    os.remove(caption_ass_file_path)
-
     return None
