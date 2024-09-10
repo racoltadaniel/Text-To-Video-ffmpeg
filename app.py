@@ -23,8 +23,8 @@ if __name__ == "__main__":
     VIDEO_SERVER = "pexel"
 
     # response = generate_script(SAMPLE_TOPIC)
-    #response = SAMPLE_TOPIC
-    response = '{"script":"I (36M) met my now ex (34F) a little over 2 years ago. During that time, the idea of her getting a boob job has come up a few times. She\'d asked me I ever dated anyone with them and what I thought of them. I told her I had, I am not a fan at all and they are a deal breaker for me"}'
+    response = SAMPLE_TOPIC
+    #response = '{"script":"I (36M) met my now ex (34F) a little over 2 years ago. During that time, the idea of her getting a boob job has come up a few times. She\'d asked me I ever dated anyone with them and what I thought of them. I told her I had, I am not a fan at all and they are a deal breaker for me"}'
 
     logging.info("Generating script for topic: %s", response)
     asyncio.run(generate_audio(response, SAMPLE_FILE_NAME))
