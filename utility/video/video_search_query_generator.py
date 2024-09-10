@@ -86,8 +86,8 @@ Timed Captions:{}
     print("Content", user_content)
     
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        temperature=0.2,
+        model="gpt-4o",
+        temperature=1,
         messages=[
             {"role": "system", "content": prompt},
             {"role": "user", "content": user_content}
