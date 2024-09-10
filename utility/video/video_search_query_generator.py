@@ -106,11 +106,6 @@ def merge_empty_intervals(segments):
     while i < len(segments):
         interval, url = segments[i]
 
-        if i < len(segments) - 1:
-            next_interval = segments[i + 1][0]
-            if interval[1] != next_interval[0]:
-                interval[1] = next_interval[0] 
-
         if url is None:
             # Find consecutive None intervals
             j = i + 1

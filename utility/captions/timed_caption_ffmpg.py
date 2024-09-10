@@ -54,6 +54,21 @@ def parse_vtt(vtt_file):
 def generate_timed_captions(subtitle_file):
     captions = parse_vtt(subtitle_file)
     logging.info(captions)
+    
+    merged = []
+    i = 0
+    while i < len(captions):
+        interval, text = captions[i]
+
+        if i < len(captions) - 1:
+            next_interval = captions[i + 1][0]
+            if interval[1] != next_interval[0]:
+                interval[1] = next_interval[0] 
+
+        merged.append([interval, text])
+        i += 1
+
+    
     last_entry = captions[-1]
     start_time_last, end_time_last = last_entry[0]
     end_time = timestamp_to_seconds(end_time_last)
