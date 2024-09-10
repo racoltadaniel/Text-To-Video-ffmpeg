@@ -2,6 +2,7 @@ import os
 import requests
 from utility.utils import log_response,LOG_TYPE_PEXEL
 import logging
+import utility.logger_config
 
 PEXELS_API_KEY = ''
 def read_api_key(file_path):
@@ -21,15 +22,6 @@ if api_key:
     PEXELS_API_KEY=api_key
 else:
     raise ValueError("API key is not available. Please check the properties file.")
-
-
-
-logging.basicConfig(
-    filename='app.log',            # Log file name
-    filemode='a',                  # Append mode
-    format='%(asctime)s - %(levelname)s - %(message)s',  # Log format
-    level=logging.DEBUG            # Log level (DEBUG for detailed logs)
-)
 
 def search_videos(query_string, orientation_landscape=False):
    

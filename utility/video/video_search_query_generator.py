@@ -5,17 +5,11 @@ import re
 from datetime import datetime
 from utility.utils import log_response,LOG_TYPE_GPT
 import logging
+import utility.logger_config
 
 
 
 log_directory = ".logs/gpt_logs"
-
-logging.basicConfig(
-    filename='app.log',            # Log file name
-    filemode='a',                  # Append mode
-    format='%(asctime)s - %(levelname)s - %(message)s',  # Log format
-    level=logging.DEBUG            # Log level (DEBUG for detailed logs)
-)
 
 prompt = """# Instructions
 

@@ -1,7 +1,7 @@
 import logging
 import subprocess
 import os
-
+import utility.logger_config
 SUBTITLE_TEMPLATE = """[Script Info]
 Title: Centered Captions Example
 ScriptType: v4.00+
