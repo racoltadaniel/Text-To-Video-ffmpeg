@@ -3,10 +3,10 @@ import tempfile
 import platform
 import subprocess
 import logging
-from moviepy.editor import (AudioFileClip, ColorClip, CompositeVideoClip, CompositeAudioClip, ImageClip,
-                            TextClip, VideoFileClip)
+from moviepy.editor import (AudioFileClip, CompositeVideoClip, CompositeAudioClip, VideoFileClip)
 from moviepy.audio.fx.audio_loop import audio_loop
 from moviepy.audio.fx.audio_normalize import audio_normalize
+from .caption_render import add_caption
 import requests
 
 
@@ -81,34 +81,17 @@ def get_output_media(audio_file_path, timed_captions, background_video_data, vid
     
     visual_clips = []
 
-    stroke_width=30
     target_resolution = (1080, 1920)
 
-
     for (t1_video, t2_video), video_url in background_video_data:
-        for (t1_caption, t2_caption), text in timed_captions:
-            if (t1_video, t2_video) == (t1_caption, t2_caption):
-                video_filename = tempfile.NamedTemporaryFile(delete=False).name
-                download_file(video_url, video_filename)
-                
-                video_clip = VideoFileClip(video_filename)
-                video_clip = video_clip.resize(newsize=target_resolution)
-                video_clip = video_clip.set_start(t1_video).set_end(t2_video)
-                line1, line2 = split_text(text)
-                splitText = f"{line1}\n{line2}"
-                yPosition=video_clip.h * 4/9
-
-                background_clip = TextClip(txt=splitText, fontsize=100, font="Arial-bold", color="white", size=(video_clip.w * 3/4, None),
-                                    method="caption", align="North")
-                background_clip = background_clip.set_start(t1_caption).set_end(t2_caption).set_position(("center", yPosition))
-                
-                text_clip = TextClip(txt=splitText, fontsize=100, font="Arial-bold", color="black", size=(video_clip.w * 3/4 + stroke_width, None),
-                                    stroke_width=stroke_width, stroke_color="black", method="caption", align="North")
-                text_clip = text_clip.set_start(t1_caption).set_end(t2_caption).set_position(("center", yPosition))
-
-                combined_clip = CompositeVideoClip([video_clip , text_clip,  background_clip])
-                logging.info("Created video %s", video_filename)
-                visual_clips.append(combined_clip)
+        video_filename = tempfile.NamedTemporaryFile(delete=False).name
+        download_file(video_url, video_filename)
+        
+        video_clip = VideoFileClip(video_filename)
+        video_clip = video_clip.resize(newsize=target_resolution)
+        video_clip = video_clip.set_start(t1_video).set_end(t2_video)
+        logging.info("Created video %s", video_filename)
+        visual_clips.append(video_clip)
                     
                 
     video = CompositeVideoClip(visual_clips)
@@ -116,8 +99,6 @@ def get_output_media(audio_file_path, timed_captions, background_video_data, vid
     audio_clips = []
     audio_file_clip = AudioFileClip(audio_file_path)
     audio_clips.append(audio_file_clip)
-
-    
 
     if audio_clips:
         audio = CompositeAudioClip(audio_clips)
@@ -129,5 +110,7 @@ def get_output_media(audio_file_path, timed_captions, background_video_data, vid
     for (t1, t2), video_url in background_video_data:
         video_filename = tempfile.NamedTemporaryFile(delete=False).name
         os.remove(video_filename)
+
+    add_caption(OUTPUT_FILE_NAME, timed_captions)
 
     return OUTPUT_FILE_NAME

@@ -1,6 +1,15 @@
 import whisper_timestamped as whisper
 from whisper_timestamped import load_model, transcribe_timestamped
 import re
+import logging
+
+logging.basicConfig(
+    filename='/home/dani/workspaces/Text-To-Video-AI2/app.log',            # Log file name
+    filemode='a',                  # Append mode
+    format='%(asctime)s - %(levelname)s - %(message)s',  # Log format
+    level=logging.DEBUG            # Log level (DEBUG for detailed logs)
+)
+
 
 def generate_timed_captions(audio_filename,model_size="base"):
     WHISPER_MODEL = load_model(model_size)
@@ -19,7 +28,7 @@ def splitWordsBySize(words, maxCaptionSize):
         while words and len(caption + ' ' + words[0]) <= maxCaptionSize:
             caption += ' ' + words[0]
             words = words[1:]
-            if len(caption) >= halfCaptionSize and words:
+            if len(caption) >= halfCaptionSize and len(words) > 2:
                 break
         captions.append(caption)
     return captions
@@ -35,10 +44,6 @@ def getTimestampMapping(whisper_analysis):
             index = newIndex
     return locationToTimestamp
 
-def cleanWord(word):
-   
-    return re.sub(r'[^\w\s\-_"\'\']', '', word)
-
 def interpolateTimeFromDict(word_position, d):
    
     for key, value in d.items():
@@ -46,9 +51,31 @@ def interpolateTimeFromDict(word_position, d):
             return value
     return None
 
-def getCaptionsWithTime(whisper_analysis, maxCaptionSize=60, considerPunctuation=False):
+def dontIsolateLastWord(CaptionsPairs):
+    if len(CaptionsPairs) >= 2:
+        last_entry = CaptionsPairs[-1]
+        second_last_entry = CaptionsPairs[-2]
+
+        start_time_last, end_time_last = last_entry[0]
+        
+        start_time_second_last, end_time_second_last = second_last_entry[0]
+        duration_last = end_time_last - start_time_last
+
+        if duration_last < 1:
+            new_start_time = start_time_second_last
+            new_end_time = end_time_last + 1
+            new_word = second_last_entry[1] + " " + last_entry[1]
+            
+            CaptionsPairs[-2] = ((new_start_time, new_end_time), new_word)
+            
+            CaptionsPairs.pop()
+    return CaptionsPairs
+
+
+def getCaptionsWithTime(whisper_analysis, maxCaptionSize=60, considerPunctuation=True):
    
     wordLocationToTime = getTimestampMapping(whisper_analysis)
+    logging.info("location to time %s", wordLocationToTime)
     position = 0
     start_time = 0
     CaptionsPairs = []
@@ -59,7 +86,7 @@ def getCaptionsWithTime(whisper_analysis, maxCaptionSize=60, considerPunctuation
         words = [word for sentence in sentences for word in splitWordsBySize(sentence.split(), maxCaptionSize)]
     else:
         words = text.split()
-        words = [cleanWord(word) for word in splitWordsBySize(words, maxCaptionSize)]
+        words = [word for word in splitWordsBySize(words, maxCaptionSize)]
     
     for word in words:
         position += len(word) + 1
@@ -68,4 +95,5 @@ def getCaptionsWithTime(whisper_analysis, maxCaptionSize=60, considerPunctuation
             CaptionsPairs.append(((start_time, end_time), word))
             start_time = end_time
 
+    CaptionsPairs = dontIsolateLastWord(CaptionsPairs)
     return CaptionsPairs
