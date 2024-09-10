@@ -2,14 +2,14 @@ import whisper_timestamped as whisper
 from whisper_timestamped import load_model, transcribe_timestamped
 import re
 import logging
+import os 
 
 logging.basicConfig(
-    filename='/home/dani/workspaces/Text-To-Video-AI2/app.log',            # Log file name
+    filename= os.path.join(os.path.dirname(__file__), 'app.log'),            # Log file name
     filemode='a',                  # Append mode
     format='%(asctime)s - %(levelname)s - %(message)s',  # Log format
     level=logging.DEBUG            # Log level (DEBUG for detailed logs)
 )
-
 
 def generate_timed_captions(audio_filename,model_size="base"):
     WHISPER_MODEL = load_model(model_size)

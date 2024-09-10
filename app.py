@@ -1,8 +1,5 @@
 import logging
 from openai import OpenAI
-import os
-import edge_tts
-import json
 import asyncio
 import whisper_timestamped as whisper
 from utility.script.script_generator import generate_script
@@ -12,9 +9,10 @@ from utility.video.background_video_generator import generate_video_url
 from utility.render.render_engine import get_output_media
 from utility.video.video_search_query_generator import getVideoSearchQueriesTimed, merge_empty_intervals
 import argparse
+import os
 
 logging.basicConfig(
-    filename='/home/dani/workspaces/Text-To-Video-AI2/app.log',            # Log file name
+    filename= os.path.join(os.path.dirname(__file__), 'app.log'),            # Log file name
     filemode='a',                  # Append mode
     format='%(asctime)s - %(levelname)s - %(message)s',  # Log format
     level=logging.DEBUG            # Log level (DEBUG for detailed logs)
@@ -32,8 +30,8 @@ if __name__ == "__main__":
     VIDEO_SERVER = "pexel"
 
     # response = generate_script(SAMPLE_TOPIC)
-    # response = SAMPLE_TOPIC
-    response = '{"script":"I (36M) met my now ex (34F) a little over 2 years ago. During that time, the idea of her getting a boob job has come up a few times. She\'d asked me I ever dated anyone with them and what I thought of them. I told her I had, I am not a fan at all and they are a deal breaker for me"}'
+    response = SAMPLE_TOPIC
+    #response = '{"script":"I (36M) met my now ex (34F) a little over 2 years ago. During that time, the idea of her getting a boob job has come up a few times. She\'d asked me I ever dated anyone with them and what I thought of them. I told her I had, I am not a fan at all and they are a deal breaker for me"}'
 
     logging.info("Generating script for topic: %s", response)
     asyncio.run(generate_audio(response, SAMPLE_FILE_NAME))
