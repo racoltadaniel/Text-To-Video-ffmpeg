@@ -1,4 +1,6 @@
 import edge_tts
+import logging
+import utility.logger_config
 
 async def generate_audio(text,outputFilename, language):
     lang = 'en-AU-WilliamNeural'
@@ -16,6 +18,7 @@ async def generate_audio(text,outputFilename, language):
             if chunk["type"] == "audio":
                 file.write(chunk["data"])
             elif chunk["type"] == "WordBoundary":
+                # logging.info("Offest %s duration %s text %s", chunk["offset"], chunk["duration"], chunk["text"])
                 submaker.create_sub((chunk["offset"], chunk["duration"]), chunk["text"])
 
     with open("test.vtt", "w", encoding="utf-8") as file:
