@@ -10,6 +10,10 @@ async def generate_audio(text,outputFilename, language):
         lang = "id-ID-ArdiNeural"
     if (language == "English-Female"):
         lang = "en-US-AriaNeural"
+    if (language == "Romanian-Female"):
+        lang = "ro-RO-AlinaNeural"
+    if (language == "Romanian-Male"):
+        lang = "ro-RO-EmilNeural"
 
     communicate = edge_tts.Communicate(text, lang)
     submaker = edge_tts.SubMaker()
