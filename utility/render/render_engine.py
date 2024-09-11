@@ -4,7 +4,7 @@ import platform
 import subprocess
 import logging
 import utility.logger_config
-from moviepy.editor import (AudioFileClip, CompositeVideoClip, CompositeAudioClip, VideoFileClip)
+from moviepy.editor import (AudioFileClip, CompositeVideoClip, CompositeAudioClip, VideoFileClip, afx)
 from moviepy.audio.fx.audio_loop import audio_loop
 from moviepy.audio.fx.audio_normalize import audio_normalize
 from .caption_render import add_caption
@@ -64,7 +64,7 @@ def split_text(text, max_length=20):
 
 
 
-def get_output_media(audio_file_path, timed_captions, background_video_data, video_server, job_id):
+def get_output_media(audio_file_path, background_audio_path, timed_captions, background_video_data, video_server, job_id):
     OUTPUT_FILE_NAME = generateFolder + "/rendered_video"+ str(job_id) +".mp4"
     magick_path = get_program_path("magick")
     print(magick_path)
@@ -93,6 +93,19 @@ def get_output_media(audio_file_path, timed_captions, background_video_data, vid
     audio_clips = []
     audio_file_clip = AudioFileClip(audio_file_path)
     audio_clips.append(audio_file_clip)
+
+    if background_audio_path is not None:
+        background_audio_clip = AudioFileClip(background_audio_path).volumex(0.05) 
+
+        if background_audio_clip.duration < audio_file_clip.duration:
+            # Loop the background audio if it is shorter
+            background_audio_clip = background_audio_clip.fx(afx.audio_loop, duration=audio_file_clip.duration)
+        elif background_audio_clip.duration > audio_file_clip.duration:
+            # Trim the background audio if it is longer
+            background_audio_clip = background_audio_clip.subclip(0, audio_file_clip.duration)
+
+        # Combine the main audio and background audio
+        audio_clips.append(background_audio_clip)
 
     if audio_clips:
         audio = CompositeAudioClip(audio_clips)
