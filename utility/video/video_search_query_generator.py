@@ -71,8 +71,14 @@ def getVideoSearchQueriesTimed(script,captions_timed):
             out = json.loads(content)
         except Exception as e:
             logging.error(e)
-            content = fix_json(content.replace("```json", "").replace("```", ""))
-            out = json.loads(content)
+            try:
+              content = fix_json(content.replace("```json", "").replace("```", ""))
+              out = json.loads(content)
+              return out
+            except Exception as e:
+              content= re.sub(r'(?<!")(\d+:\d+:\d+\.\d+)(?!")', r'"\1"', content)
+              out = json.loads(content)
+              return out
         return out
     except Exception as e:
         logging.error("error in response %s",e)
