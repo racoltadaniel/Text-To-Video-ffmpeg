@@ -17,12 +17,14 @@ if __name__ == "__main__":
     parser.add_argument("jobId", type=int, help="Job id")
     parser.add_argument("language", type=str, help="language")
     parser.add_argument("audioUrl",  nargs='?', default=None,type=str, help="audioUrl")
+    parser.add_argument("audioVolume",  nargs='?', default=0.05,type=float, help="audioVolume")
 
     args = parser.parse_args()
     SAMPLE_TOPIC = args.topic
     JOB_ID=args.jobId
     LANGUAGE = args.language
     AUDIO_URL=args.audioUrl
+    BACKGROUND_AUDIO_VOLUME=args.audioVolume
 
     SAMPLE_FILE_NAME = "audio_tts.wav"
     VIDEO_SERVER = "pexel"
@@ -61,7 +63,7 @@ if __name__ == "__main__":
         logging.info("Background audio path %s", background_audio_path)
 
     if background_video_urls is not None:
-        video = get_output_media(SAMPLE_FILE_NAME, background_audio_path, timed_captions_mini, background_video_urls, VIDEO_SERVER, JOB_ID)
+        video = get_output_media(SAMPLE_FILE_NAME, background_audio_path, BACKGROUND_AUDIO_VOLUME, timed_captions_mini, background_video_urls, VIDEO_SERVER, JOB_ID)
         logging.info("Video generation completed")
     else:
         logging.error("No video generated")
