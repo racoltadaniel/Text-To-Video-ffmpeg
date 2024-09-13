@@ -80,6 +80,13 @@ def generate_timed_captions(subtitle_file):
     logging.info("new captiosn: %s", captions)
     return captions
 
+def replace_first_caption(captions, first_caption, first_text ):
+    i = 0
+    new_caption = [[first_caption, first_text]]
+    for caption in captions:
+        if caption[0][0][1] >= first_caption[1]:
+            new_caption.append(caption)
+    return new_caption
 
 def timestamp_to_seconds(ts):
     # Convert timestamp in format 0:00:04.41 to seconds
