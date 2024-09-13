@@ -81,10 +81,26 @@ def generate_timed_captions(subtitle_file):
     return captions
 
 def replace_first_caption(captions, first_caption, first_text ):
-    new_caption = [[first_caption, first_text]]
-    for caption in captions:
-        if caption[0][0][1] >= first_caption[1]:
+    new_caption = []
+    new_first_caption_text = ""
+    new_first_caption_start = first_caption[0]
+    still_first_sentence = True
+    i=0
+    while i < len(captions):
+        caption = captions[i]
+        caption_interval = caption[0]
+        caption_text = caption[1]
+        if still_first_sentence and (i == 0 or not caption_text.istitle()): 
+            new_first_caption_text += caption_text + " "
+        else:
+            if(still_first_sentence):
+                new_first_caption_end = caption_interval[0]
+                new_caption.append((new_first_caption_start, new_first_caption_end), new_first_caption_text)
+                still_first_sentence = False
             new_caption.append(caption)
+            
+        i+=1
+
     return new_caption
 
 def timestamp_to_seconds(ts):
