@@ -48,6 +48,7 @@ if __name__ == "__main__":
     if FIRST_CAPTION_FULL:
         first_caption, first_text = timed_captions[0]
         timed_captions_mini = replace_first_caption(timed_captions_mini, first_caption, first_text)
+        logging.info("First Caption Full. Timed captions generated: %s", timed_captions_mini)
 
     #search_terms = getVideoSearchQueriesTimed(response, timed_captions)
     search_terms = [[[0, 2.82], ['meeting ex', 'relationship start', 'two years']], [[2.82, 5.24], ['ex-girlfriend', 'couple years', 'time together']], [[5.24, 7.54], ['boob job', 'surgery discussion', 'breast enhancement']], [[7.54, 9.24], ['previous partners', 'dating history', 'opinion on surgery']], [[9.24, 11.84], ['personal preference', 'dislikes surgery', 'deal breaker']]]
