@@ -4,7 +4,7 @@ import utility.logger_config
 from pytube import YouTube
 import yt_dlp
 
-async def generate_audio(text,outputFilename, language):
+async def generate_audio(text,outputFilename, language, firstCaptionFull):
     lang = 'en-AU-WilliamNeural'
     if (language == "Indonesian-Female"):
         lang = "id-ID-GadisNeural"
@@ -32,6 +32,10 @@ async def generate_audio(text,outputFilename, language):
 
     with open("test.vtt2", "w", encoding="utf-8") as file:
         file.write(submaker.generate_subs(words_in_cue=2))
+
+    if(firstCaptionFull):
+        with open("test.vtt3", "w", encoding="utf-8") as file:
+            file.write(submaker.generate_subs(words_in_cue=1))
         
 def download_audio(youtube_url, output_path):
     try:

@@ -37,7 +37,7 @@ if __name__ == "__main__":
     #response = '{"script":"I (36M) met my now ex (34F) a little over 2 years ago. During that time, the idea of her getting a boob job has come up a few times. She\'d asked me I ever dated anyone with them and what I thought of them. I told her I had, I am not a fan at all and they are a deal breaker for me"}'
 
     logging.info("Generating script for topic: %s", response)
-    asyncio.run(generate_audio(response, SAMPLE_FILE_NAME, LANGUAGE))
+    asyncio.run(generate_audio(response, SAMPLE_FILE_NAME, LANGUAGE, FIRST_CAPTION_FULL))
 
     timed_captions = generate_timed_captions("test.vtt")
     logging.info("Timed captions generated: %s", timed_captions)
@@ -46,8 +46,8 @@ if __name__ == "__main__":
     logging.info("Timed captions mini generated: %s", timed_captions_mini)
 
     if FIRST_CAPTION_FULL:
-        first_caption, first_text = timed_captions[0]
-        timed_captions_mini = replace_first_caption(timed_captions_mini, first_caption, first_text)
+        caption_one_word = generate_timed_captions("test.vtt3")
+        timed_captions_mini = replace_first_caption(timed_captions_mini, caption_one_word)
         logging.info("First Caption Full. Timed captions generated: %s", timed_captions_mini)
 
     #search_terms = getVideoSearchQueriesTimed(response, timed_captions)

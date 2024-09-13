@@ -80,25 +80,51 @@ def generate_timed_captions(subtitle_file):
     logging.info("new captiosn: %s", captions)
     return captions
 
-def replace_first_caption(captions, first_caption, first_text ):
+def replace_first_caption(captions, caption_one_word ):
     new_caption = []
     new_first_caption_text = ""
-    new_first_caption_start = first_caption[0]
-    still_first_sentence = True
+    new_first_caption_start = captions[0][0][0]
+
     i=0
+    startCaptionFrom = 0
+    while i < len(caption_one_word):
+        interval, text = caption_one_word[i]
+        if(text.istitle() and i>0):
+            # if new sentence
+            for caption in captions:
+                # if first word in next caption the capital letter leave it unchange, continue appending from here
+                if(caption[0][0] == interval[0]):
+                    startCaptionFrom=captions.index(caption)
+                    new_first_caption_end = interval[0]
+                    break
+            
+            if(startCaptionFrom>0):
+                break
+
+            j=0
+            while j < len(captions):
+                caption= captions[j]
+                # if last word in next caption
+                if(caption[0][1] == interval[1]):
+                    #continue caption from here but 
+                    startCaptionFrom=captions.index(caption)
+                    #make interval smaller
+                    new_first_caption_end = interval[0]
+                    captions[j] = ((interval[0], caption[0][1]), caption[1].split()[-1])
+                    
+                    break
+                j += 1
+            break
+        else:
+            new_first_caption_text+= text + " "
+        i += 1
+
+    new_caption.append(((new_first_caption_start, new_first_caption_end ), new_first_caption_text))
+
+    i=startCaptionFrom
     while i < len(captions):
         caption = captions[i]
-        caption_interval = caption[0]
-        caption_text = caption[1]
-        if still_first_sentence and (i == 0 or not caption_text.istitle()): 
-            new_first_caption_text += caption_text + " "
-        else:
-            if(still_first_sentence):
-                new_first_caption_end = caption_interval[0]
-                new_caption.append((new_first_caption_start, new_first_caption_end), new_first_caption_text)
-                still_first_sentence = False
-            new_caption.append(caption)
-            
+        new_caption.append(caption)
         i+=1
 
     return new_caption
