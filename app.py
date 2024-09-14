@@ -50,14 +50,14 @@ if __name__ == "__main__":
         timed_captions_mini = replace_first_caption(timed_captions_mini, caption_one_word)
         logging.info("First Caption Full. Timed captions generated: %s", timed_captions_mini)
 
-    #search_terms = getVideoSearchQueriesTimed(response, timed_captions)
-    search_terms = [[[0, 2.82], ['meeting ex', 'relationship start', 'two years']], [[2.82, 5.24], ['ex-girlfriend', 'couple years', 'time together']], [[5.24, 7.54], ['boob job', 'surgery discussion', 'breast enhancement']], [[7.54, 9.24], ['previous partners', 'dating history', 'opinion on surgery']], [[9.24, 11.84], ['personal preference', 'dislikes surgery', 'deal breaker']]]
+    search_terms = getVideoSearchQueriesTimed(response, timed_captions)
+    #search_terms = [[[0, 2.82], ['meeting ex', 'relationship start', 'two years']], [[2.82, 5.24], ['ex-girlfriend', 'couple years', 'time together']], [[5.24, 7.54], ['boob job', 'surgery discussion', 'breast enhancement']], [[7.54, 9.24], ['previous partners', 'dating history', 'opinion on surgery']], [[9.24, 11.84], ['personal preference', 'dislikes surgery', 'deal breaker']]]
     logging.info("Search terms generated: %s", search_terms)
 
     background_video_urls = None
     if search_terms is not None:
-        #background_video_urls = generate_video_url(search_terms, VIDEO_SERVER)
-        background_video_urls = [[[0, 118.82], 'http://104.154.18.51:3000/video/90']]
+        background_video_urls = generate_video_url(search_terms, VIDEO_SERVER)
+        #background_video_urls = [[[0, 118.82], 'http://104.154.18.51:3000/video/90']]
         logging.info("Background videos generated: %s", background_video_urls)
     else:
         logging.error("No background video found")
