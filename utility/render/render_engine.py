@@ -28,7 +28,8 @@ generateFolder = read_api_key('/etc/properties/videogen.properties')
 
 def download_file(url, filename):
     with open(filename, 'wb') as f:
-        response = requests.get(url)
+        headers = {"user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"}
+        response = requests.get(url, headers= headers)
         f.write(response.content)
 
 def search_program(program_name):
