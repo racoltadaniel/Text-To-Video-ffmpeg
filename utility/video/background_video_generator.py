@@ -47,7 +47,12 @@ def search_videos(query_string, orientation_landscape=False):
 
 
 def getBestVideo(query_string, orientation_landscape=True, used_vids=[]):
-    vids = search_videos(query_string, orientation_landscape)
+    vids = None
+    try:
+        vids = search_videos(query_string, orientation_landscape)
+    except Exception as e:
+        logging.error(f"Error reading properties file: {e}")
+        return None
     videos = vids['videos']  # Extract the videos list from JSON
 
     # Filter and extract videos with width and height as 1920x1080 for landscape or 1080x1920 for portrait
