@@ -45,7 +45,7 @@ if __name__ == "__main__":
     timed_captions_mini = generate_timed_captions("test.vtt2")
     logging.info("Timed captions mini generated: %s", timed_captions_mini)
 
-    if FIRST_CAPTION_FULL:
+    if FIRST_CAPTION_FULL == True:
         caption_one_word = generate_timed_captions("test.vtt3")
         timed_captions_mini = replace_first_caption(timed_captions_mini, caption_one_word)
         logging.info("First Caption Full. Timed captions generated: %s", timed_captions_mini)
