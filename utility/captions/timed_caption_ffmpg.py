@@ -70,7 +70,8 @@ def generate_timed_captions(subtitle_file):
 
     first_entry = captions[0]
     first_entry_interval = first_entry[0]
-    first_entry_interval_new = (0.0 , first_entry_interval[1]) 
+    first_entry_interval_new_start = seconds_to_timestamp(0.0)
+    first_entry_interval_new = (first_entry_interval_new_start , first_entry_interval[1]) 
     captions[0] = (first_entry_interval_new, first_entry[1])
     last_entry = captions[-1]
     start_time_last, end_time_last = last_entry[0]
