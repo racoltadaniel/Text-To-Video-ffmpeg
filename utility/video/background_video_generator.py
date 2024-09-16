@@ -38,7 +38,7 @@ def search_videos(query_string, orientation_landscape=False):
         "per_page": 15,
         "size": "medium"
     }
-
+    logging.debug(f"Url: {url}, Headers: {headers}, Params: {params}")
     response = requests.get(url, headers=headers, params=params)
     json_data = response.json()
     log_response(LOG_TYPE_PEXEL,query_string,response.json())
@@ -51,7 +51,7 @@ def getBestVideo(query_string, orientation_landscape=True, used_vids=[]):
     try:
         vids = search_videos(query_string, orientation_landscape)
     except Exception as e:
-        logging.error(f"Error reading properties file: {e}")
+        logging.error(f"Error searching videos: {e}")
         return None
     videos = vids['videos']  # Extract the videos list from JSON
 
