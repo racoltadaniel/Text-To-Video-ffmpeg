@@ -73,10 +73,12 @@ def getVideoSearchQueriesTimed(script,captions_timed):
             logging.error(e)
             try:
               content = fix_json(content.replace("```json", "").replace("```", ""))
+              logging.error("ChatGPT Content %s",content)
               out = json.loads(content)
               return out
             except Exception as e:
               content= re.sub(r'(?<!")(\d+:\d+:\d+\.\d+)(?!")', r'"\1"', content)
+              logging.error("ChatGPT Content %s",content)
               out = json.loads(content)
               return out
         return out
