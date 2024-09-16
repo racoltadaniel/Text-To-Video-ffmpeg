@@ -40,6 +40,7 @@ def search_videos(query_string, orientation_landscape=False):
     }
     logging.debug(f"Url: {url}, Headers: {headers}, Params: {params}")
     response = requests.get(url, headers=headers, params=params)
+    logging.debug(f"Response: {response}")
     json_data = response.json()
     log_response(LOG_TYPE_PEXEL,query_string,response.json())
    
